@@ -1,0 +1,147 @@
+@layer vuetify-overrides {
+  .v-application {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  .v-application [class*='text-'], .v-application .v-btn, .v-application .v-field, .v-application .v-chip {
+    font-family: inherit;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  .page { padding: 14px 20px !important; }
+  .page-title { font-size: 20px; font-weight: 600; line-height: 1.25; margin: 0; text-wrap: balance; }
+  .page-sub { font-size: 13px; line-height: 1.3; margin-top: 2px; }
+  .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 12px; margin-bottom: 12px; }
+  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+  .v-data-table th {
+    font-size: 11px !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600 !important;
+    color: rgba(var(--v-theme-on-surface), 0.65) !important;
+  }
+
+  code, pre, .v-code {
+    font-family: var(--v-font-mono);
+  }
+
+  // Premium scrollbars
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(var(--v-theme-primary), 0.15);
+    border-radius: 4px;
+    &:hover {
+      background: rgba(var(--v-theme-primary), 0.3);
+    }
+  }
+
+  // Soft glassmorphism cards
+  .glass-card {
+    backdrop-filter: blur(12px) saturate(180%);
+    background-color: rgba(var(--v-theme-surface), 0.7) !important;
+    border: 1px solid rgba(var(--v-theme-primary), 0.08) !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(var(--v-theme-primary), 0.06) !important;
+      border-color: rgba(var(--v-theme-primary), 0.18) !important;
+    }
+  }
+
+  // Simulation pulse marker
+  .pulse-marker {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: inherit;
+      border-radius: 50%;
+      animation: pulse-ring 1.5s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+    }
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  // Map elements
+  .map-container {
+    background: radial-gradient(circle, rgba(var(--v-theme-primary), 0.03) 0%, rgba(var(--v-theme-background), 1) 100%);
+    border: 1px solid rgba(var(--v-theme-primary), 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .road-path {
+    stroke-dasharray: 6, 6;
+    animation: dash-animation 20s linear infinite;
+  }
+
+  @keyframes dash-animation {
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  // Interactive dashboard components
+  .chart-bar {
+    transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .demo-console {
+    background: rgba(15, 23, 42, 0.95);
+    color: #38bdf8;
+    font-family: var(--v-font-mono);
+    border-left: 4px solid var(--v-theme-primary);
+  }
+
+  // Step Timeline
+  .tracking-stepper {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 19px;
+      width: 2px;
+      background: rgba(var(--v-theme-primary), 0.1);
+    }
+  }
+}
