@@ -1,7 +1,7 @@
 import type { StatusColor } from '@/types'
 
 export interface Report { title: string, text: string, icon: string }
-export interface Kpi { label: string, value: string, note: string, color: StatusColor, icon: string, money?: boolean }
+export interface Kpi { label: string, value: string, note: string, color: StatusColor, icon: string, to: string, money?: boolean }
 export interface Notification { text: string, time: string, icon: string, color: StatusColor }
 
 export const reports: Report[] = [
@@ -20,11 +20,11 @@ export const dashboard = {
   ordersByType: { FTL: [62, 70, 66, 81, 88, 74], FCL: [18, 22, 25, 24, 31, 28], LTL: [40, 44, 52, 49, 57, 51] } as Record<string, number[]>,
   revenue: [84, 91, 88, 106, 119, 107], // thousands
   kpis: [
-    { label: 'Open orders', value: '132', note: '+9 this week', color: 'success', icon: 'mdi-package-variant-closed' },
-    { label: 'Trips in transit', value: '27', note: '4 delayed', color: 'warning', icon: 'mdi-truck-fast-outline' },
-    { label: 'Billed this month', value: '107K', note: '-10% vs Sep', color: 'error', icon: 'mdi-cash-multiple', money: true },
-    { label: 'Receivables due', value: '62K', note: '5 invoices overdue', color: 'error', icon: 'mdi-clock-alert-outline', money: true },
-    { label: 'Vehicles on duty', value: '14 / 19', note: '74% utilisation', color: 'success', icon: 'mdi-truck-outline' },
+    { label: 'Open orders', value: '132', note: '+9 this week', color: 'success', icon: 'mdi-package-variant-closed', to: '/app/orders' },
+    { label: 'Trips in transit', value: '27', note: '4 delayed', color: 'warning', icon: 'mdi-truck-fast-outline', to: '/app/trips' },
+    { label: 'Billed this month', value: '107K', note: '-10% vs Sep', color: 'error', icon: 'mdi-cash-multiple', to: '/app/invoices', money: true },
+    { label: 'Receivables due', value: '62K', note: '5 invoices overdue', color: 'error', icon: 'mdi-clock-alert-outline', to: '/app/invoices', money: true },
+    { label: 'Vehicles on duty', value: '14 / 19', note: '74% utilisation', color: 'success', icon: 'mdi-truck-outline', to: '/app/assets?tab=vehicles' },
   ] as Kpi[],
 }
 

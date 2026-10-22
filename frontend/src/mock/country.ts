@@ -7,7 +7,6 @@ export interface Country {
 
 export const COUNTRIES: Country[] = [
   { code: 'UAE', currency: 'AED' },
-  { code: 'India', currency: 'INR' },
   { code: 'Saudi Arabia', currency: 'SAR' },
   { code: 'Oman', currency: 'OMR' },
 ]

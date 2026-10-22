@@ -1,7 +1,8 @@
 <template>
   <v-container fluid class="page">
-    <PageHeader toolbar title="Assets" subtitle="Drivers and vehicles.">
-      <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" @click="(tab === 'drivers' ? driverCrud : vehicleCrud).openNew()">{{ tab === 'drivers' ? 'Add driver' : 'Add vehicle' }}</v-btn>
+    <PageHeader title="Assets" subtitle="Drivers and vehicles.">
+      <template #left><ListFilterBar :list="active" /></template>
+      <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" height="32" @click="(tab === 'drivers' ? driverCrud : vehicleCrud).openNew()">{{ tab === 'drivers' ? 'Add driver' : 'Add vehicle' }}</v-btn>
     </PageHeader>
 
     <v-tabs v-model="tab" color="primary" class="mb-2">
@@ -9,8 +10,18 @@
       <v-tab value="vehicles" class="text-none">Vehicles <v-chip size="x-small" label class="ml-2 font-mono">{{ vehicles.length }}</v-chip></v-tab>
     </v-tabs>
 
-    <DataTable v-if="tab === 'drivers'" :columns="driverColumns" :items="drivers" search-label="Search drivers" :link-to="driverLink" @edit="driverCrud.openEdit" @remove="driverCrud.askRemove" />
-    <DataTable v-else :columns="vehicleColumns" :items="vehicles" search-label="Search vehicles" :link-to="vehicleLink" @edit="vehicleCrud.openEdit" @remove="vehicleCrud.askRemove" />
+    <ListTable v-if="tab === 'drivers'" :list="driverList" :columns="driverColumns" storage-key="drivers" :link-to="driverLink" empty-text="Add the first driver.">
+      <template #actions="{ item }">
+        <RowActionButton icon="mdi-pencil-outline" label="Edit driver" @click="driverCrud.openEdit(item)" />
+        <RowActionButton tone="error" icon="mdi-delete-outline" label="Delete driver" @click="driverCrud.askRemove(item)" />
+      </template>
+    </ListTable>
+    <ListTable v-else :list="vehicleList" :columns="vehicleColumns" storage-key="vehicles" :link-to="vehicleLink" empty-text="Add the first vehicle.">
+      <template #actions="{ item }">
+        <RowActionButton icon="mdi-pencil-outline" label="Edit vehicle" @click="vehicleCrud.openEdit(item)" />
+        <RowActionButton tone="error" icon="mdi-delete-outline" label="Delete vehicle" @click="vehicleCrud.askRemove(item)" />
+      </template>
+    </ListTable>
 
     <AssetFormDialog v-model="driverCrud.formOpen" kind="driver" :row="driverCrud.editing" @save="driverCrud.save" />
     <AssetFormDialog v-model="vehicleCrud.formOpen" kind="vehicle" :row="vehicleCrud.editing" @save="vehicleCrud.save" />
@@ -20,19 +31,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Driver, Vehicle } from '@/types'
-import { drivers, vehicles } from '@/mock/assets'
 import { useCrud } from '@/composables/useCrud'
+import { useList } from '@/composables/useList'
+import { drivers, vehicles } from '@/mock/assets'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
-import DataTable from '@/components/common/DataTable.vue'
+import ListFilterBar from '@/components/common/ListFilterBar.vue'
+import ListTable from '@/components/common/ListTable.vue'
 import PageHeader from '@/components/common/PageHeader.vue'
+import RowActionButton from '@/components/common/RowActionButton.vue'
 import AssetFormDialog from './components/AssetFormDialog.vue'
-import { driverColumns, driverLink, vehicleColumns, vehicleLink } from './config'
+import { driverColumns, driverLink, driverListConfig, vehicleColumns, vehicleLink, vehicleListConfig } from './config'
 
 const route = useRoute()
 const tab = ref(route.query.tab === 'vehicles' ? 'vehicles' : 'drivers')
+
+const driverList = useList(() => drivers, driverListConfig)
+const vehicleList = useList(() => vehicles, vehicleListConfig)
+const active = computed(() => (tab.value === 'drivers' ? driverList : vehicleList))
+onMounted(() => { driverList.restore(); vehicleList.restore() })
+
 const driverCrud = useCrud<Driver>(drivers, { prefix: 'DRV-' })
 const vehicleCrud = useCrud<Vehicle>(vehicles, { prefix: '' })
 </script>

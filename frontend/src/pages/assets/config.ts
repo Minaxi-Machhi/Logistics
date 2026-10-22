@@ -1,3 +1,6 @@
+import type { Driver, Vehicle } from '@/types'
+import { dmyToIso } from '@/composables/useList'
+import type { ListConfig } from '@/composables/useList'
 import type { Column, FieldDef } from '@/types'
 import { STATUS, VEHICLE_TYPE } from '@/mock/lookups'
 import { date, num, req, select, text, to } from '../fields'
@@ -31,3 +34,23 @@ export const vehicleFields: FieldDef[] = [
   date('insurance', 'Insurance till'),
   select('status', 'Status', STATUS.vehicle, { ...req, value: 'Available' }),
 ]
+
+export const driverListConfig: ListConfig<Driver> = {
+  storageKey: 'drivers-list', searchPlaceholder: 'Search drivers…',
+  searchText: r => [r.id, r.name, r.phone, r.licence],
+  filters: [],
+  status: { get: r => r.status, list: STATUS.driver, muted: ['On leave'] },
+  sorters: { id: r => r.id, name: r => r.name, phone: r => r.phone, licence: r => r.licence, expiry: r => dmyToIso(r.expiry), trips: r => r.trips, status: r => r.status },
+}
+
+export const vehicleListConfig: ListConfig<Vehicle> = {
+  storageKey: 'vehicles-list', searchPlaceholder: 'Search vehicles…',
+  searchText: r => [r.id, r.type, r.ownership],
+  filters: [
+    { key: 'type', label: 'Type', allLabel: 'All types', icon: 'mdi-truck-outline', options: VEHICLE_TYPE, get: r => r.type },
+    { key: 'ownership', label: 'Ownership', allLabel: 'All ownership', icon: 'mdi-key-outline', options: ['Owned', 'Attached'], get: r => r.ownership },
+    { key: 'capacity', label: 'Capacity', allLabel: 'All capacities', icon: 'mdi-weight', options: ['9 t', '12 t', '18 t', '28 t'], get: r => r.capacity, more: true },
+  ],
+  status: { get: r => r.status, list: STATUS.vehicle },
+  sorters: { id: r => r.id, type: r => r.type, capacity: r => r.capacity, ownership: r => r.ownership, fitness: r => dmyToIso(r.fitness), insurance: r => dmyToIso(r.insurance), status: r => r.status },
+}

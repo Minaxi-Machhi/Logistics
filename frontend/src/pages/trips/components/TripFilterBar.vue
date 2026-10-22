@@ -1,0 +1,51 @@
+<template>
+  <div class="bar">
+    <label class="search">
+      <v-icon icon="mdi-magnify" size="16" />
+      <input ref="inputEl" v-model="filters.search" type="search" placeholder="Search leg, trip, order, driver…  ( / )" aria-label="Search trips">
+    </label>
+    <FilterSelect v-model="filters.branches" label="Branch" icon="mdi-office-building-outline" :options="opts(BRANCH)" multiple all-label="All branches" />
+    <FilterSelect v-model="filters.customers" label="Customer" icon="mdi-account-group-outline" :options="opts(CUST)" multiple searchable all-label="All customers" />
+    <FilterSelect v-model="filters.jobTypes" label="Job type" icon="mdi-truck-outline" :options="opts(JOB_TYPES)" multiple all-label="All job types" />
+    <template v-if="showMore">
+      <FilterSelect v-model="filters.drivers" label="Driver" icon="mdi-card-account-details-outline" :options="opts(DRV)" multiple searchable all-label="All drivers" />
+      <FilterSelect v-model="filters.vehicles" label="Vehicle" icon="mdi-truck-outline" :options="opts(PLATE)" multiple searchable all-label="All vehicles" />
+    </template>
+    <button v-if="!moreActiveCount" type="button" class="link" :aria-expanded="showMore" @click="moreOpen = !moreOpen">
+      <v-icon :icon="showMore ? 'mdi-minus' : 'mdi-plus'" size="14" /> {{ showMore ? 'Fewer' : 'More filters' }}
+    </button>
+    <button v-if="isFiltered" type="button" class="link" @click="emit('reset')"><v-icon icon="mdi-close" size="14" /> Reset</button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import type { TripFilters } from '@/composables/useTripList'
+import { BRANCH, CUST, DRV, PLATE } from '@/mock/lookups'
+import { JOB_TYPES } from '@/mock/orders'
+import FilterSelect from '@/components/common/FilterSelect.vue'
+
+defineProps<{ filters: TripFilters, showMore: boolean, moreActiveCount: number, isFiltered: boolean }>()
+const moreOpen = defineModel<boolean>('moreOpen', { default: false })
+const emit = defineEmits<{ reset: [] }>()
+
+const opts = (list: readonly string[]) => list.map(v => ({ value: v, label: v }))
+
+// "/" jumps to the search box.
+const inputEl = ref<HTMLInputElement | null>(null)
+function onKey (e: KeyboardEvent) {
+  const tag = (e.target as HTMLElement | null)?.tagName
+  if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') { e.preventDefault(); inputEl.value?.focus() }
+}
+onMounted(() => window.addEventListener('keydown', onKey))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
+</script>
+
+<style scoped>
+.bar { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.search { display: inline-flex; flex: 0 1 230px; align-items: center; gap: 8px; min-width: 150px; height: 32px; padding: 0 10px; border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity)); border-radius: 8px; background: rgb(var(--v-theme-surface)); color: rgba(var(--v-theme-on-surface), 0.65); transition: border-color 0.15s ease; }
+.search:focus-within { border-color: rgb(var(--v-theme-primary)); }
+.search input { flex: 1 1 auto; min-width: 0; border: 0; outline: none; background: transparent; font: inherit; font-size: 13px; color: rgb(var(--v-theme-on-surface)); }
+.link { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 13px; color: rgba(var(--v-theme-on-surface), 0.65); cursor: pointer; }
+.link:hover { background: rgba(var(--v-theme-on-surface), 0.06); color: rgb(var(--v-theme-on-surface)); }
+</style>

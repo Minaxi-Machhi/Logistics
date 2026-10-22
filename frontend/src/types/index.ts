@@ -8,7 +8,7 @@ export interface Column {
   type?: ColumnType
 }
 
-export type FieldType = 'text' | 'number' | 'date' | 'select'
+export type FieldType = 'text' | 'number' | 'date' | 'select' | 'textarea'
 
 export interface FieldDef {
   key: string
@@ -17,7 +17,17 @@ export interface FieldDef {
   items?: string[]
   required?: boolean
   hint?: string
+  placeholder?: string
   value?: string | number
+  /** Step key, for dialogs that run as a stepper. */
+  step?: string
+  /** Columns the field spans in the dialog grid. */
+  span?: number
+}
+
+export interface FormStep {
+  key: string
+  label: string
 }
 
 /** Every record has a display id (order no., invoice no., registration...) used in routes. */
@@ -26,6 +36,14 @@ export interface Entity {
 }
 
 export type JobType = 'FTL' | 'FCL' | 'LTL'
+
+export interface OrderLeg {
+  id: string
+  source: string
+  destination: string
+  loading: string
+  remarks: string
+}
 
 export interface Order extends Entity {
   ref: string
@@ -41,6 +59,11 @@ export interface Order extends Entity {
   status: string
   branch: string
   cutoff: string
+  product: string
+  vendor: string
+  quantity: number
+  remarks: string
+  legs: OrderLeg[]
 }
 
 export interface Trip extends Entity {
@@ -52,6 +75,8 @@ export interface Trip extends Entity {
   departure: string
   eta: string
   status: string
+  /** Minutes behind schedule, when the trip is running late. */
+  delayMin?: number
 }
 
 export interface Customer extends Entity {

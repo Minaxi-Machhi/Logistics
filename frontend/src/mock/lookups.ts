@@ -30,6 +30,7 @@ export const STATUS_COLOR: Record<string, StatusColor> = {
   'On duty': 'info', 'In transit': 'info', Confirmed: 'info', Sent: 'info', Open: 'info', 'Ready for invoice': 'info',
   Pending: 'warning', Draft: 'warning', 'Due soon': 'warning', Expiring: 'warning', 'In service': 'warning',
   Cancelled: 'error', Overdue: 'error', Expired: 'error', Rejected: 'error',
+  'Needs a truck': 'warning', Assigned: 'info', 'In progress': 'info',
   'On leave': 'secondary', Scheduled: 'secondary', Closed: 'secondary', 'Invoice generated': 'secondary',
 }
 

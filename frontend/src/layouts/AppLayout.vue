@@ -29,7 +29,7 @@
 
     <template #append>
       <div v-if="!rail" class="pa-3">
-        <div class="text-caption text-medium-emphasis mb-2">ats_shipping · sample data</div>
+        <div class="text-caption text-medium-emphasis mb-2">Logistics · sample data</div>
         <v-btn
           variant="outlined"
           block
@@ -98,7 +98,7 @@
     <v-menu :close-on-content-click="false" location="bottom end">
       <template #activator="{ props }">
         <v-btn v-bind="props" icon variant="text" class="mr-2" aria-label="Notifications">
-          <v-badge :content="notifications.length" color="secondary" offset-x="-2" offset-y="-2">
+          <v-badge :content="notifications.length" color="primary" offset-x="-2" offset-y="-2">
             <v-icon>mdi-bell-outline</v-icon>
           </v-badge>
         </v-btn>
@@ -115,24 +115,21 @@
       </v-card>
     </v-menu>
 
-    <v-btn icon="mdi-theme-light-dark" variant="text" class="mr-2" aria-label="Toggle theme" @click="toggleTheme" />
-
     <!-- Profile -->
     <v-menu location="bottom end">
       <template #activator="{ props }">
         <v-btn v-bind="props" variant="text" class="text-none px-2" height="48">
-          <v-avatar color="error" size="38" class="mr-3 text-body-2 font-weight-bold" style="color:#fff">MM</v-avatar>
+          <v-avatar color="primary" size="38" class="mr-3 text-body-2 font-weight-bold">{{ profile.initials }}</v-avatar>
           <div class="text-left d-none d-sm-block">
-            <div class="font-weight-bold line-height-tight">Divyesh Patel</div>
-            <div class="text-caption text-medium-emphasis line-height-tight">System Admin</div>
+            <div class="font-weight-bold line-height-tight">{{ profile.name }}</div>
+            <div class="text-caption text-medium-emphasis line-height-tight">{{ profile.role }}</div>
           </div>
           <v-icon end class="d-none d-sm-inline">mdi-chevron-down</v-icon>
         </v-btn>
       </template>
       <v-list density="compact" min-width="220">
-        <v-list-item title="My profile" prepend-icon="mdi-account-outline" />
-        <v-list-item title="Company settings" prepend-icon="mdi-cog-outline" />
-        <v-list-item title="Users and roles" prepend-icon="mdi-account-group-outline" />
+        <v-list-item title="My profile" prepend-icon="mdi-account-outline" @click="profileOpen = true" />
+        <v-list-item title="Switch to customer panel" prepend-icon="mdi-account-switch-outline" @click="switchToCustomer" />
         <v-divider class="my-1" />
         <v-list-item title="Sign out" prepend-icon="mdi-logout" @click="logout" />
       </v-list>
@@ -140,8 +137,14 @@
   </v-app-bar>
 
   <v-main class="bg-background">
-    <router-view />
+    <router-view v-slot="{ Component, route }">
+      <transition name="page" mode="out-in">
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view>
   </v-main>
+
+  <ProfileDialog v-model="profileOpen" />
 
   <v-snackbar v-model="toast.open" color="success" timeout="2500">{{ toast.text }}</v-snackbar>
 </template>
@@ -149,16 +152,17 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTheme } from 'vuetify'
 import { selectRole } from '@/state'
 import { COUNTRIES, country } from '@/mock/country'
 import { notifications } from '@/mock/misc'
+import { profile } from '@/mock/profile'
+import ProfileDialog from './ProfileDialog.vue'
 import { pageTitle } from '@/composables/usePageTitle'
 import { toast } from '@/composables/useToast'
 
 const router = useRouter()
-const theme = useTheme()
 const rail = ref(false)
+const profileOpen = ref(false)
 
 const nav = [
   { title: 'Dashboard', icon: 'mdi-view-dashboard-outline', to: '/app/dashboard' },
@@ -178,8 +182,9 @@ let timer: ReturnType<typeof setInterval>
 onMounted(() => { timer = setInterval(() => { now.value = fmt() }, 30000) })
 onBeforeUnmount(() => clearInterval(timer))
 
-function toggleTheme () {
-  theme.global.name.value = theme.global.name.value === 'light' ? 'dark' : 'light'
+function switchToCustomer () {
+  selectRole('customer')
+  router.push('/customer')
 }
 
 function logout () {

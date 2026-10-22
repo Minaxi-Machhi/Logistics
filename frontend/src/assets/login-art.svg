@@ -10,11 +10,11 @@
   </defs>
   <rect width="1200" height="900" fill="url(#bg)"/>
   <rect width="1200" height="900" fill="url(#grid)"/>
-  <g fill="none" stroke="#dc1f2e" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 12">
+  <g fill="none" stroke="#4f86f7" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 12">
     <path d="M120 700C300 520 380 640 520 460S760 300 1060 180"/>
     <path d="M80 330C260 300 360 220 520 260S800 480 1100 560" stroke="#7db4f2" stroke-opacity="0.7"/>
   </g>
-  <g fill="#dc1f2e">
+  <g fill="#4f86f7">
     <circle cx="120" cy="700" r="9"/><circle cx="520" cy="460" r="9"/><circle cx="1060" cy="180" r="9"/>
   </g>
   <g fill="#7db4f2">

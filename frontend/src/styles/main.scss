@@ -19,13 +19,73 @@
     background: color-mix(in srgb, currentColor 10%, transparent);
   }
 
+  // ---- motion ----
+  .page-enter-active, .page-leave-active { transition: opacity 0.16s ease, transform 0.16s ease; }
+  .page-enter-from { opacity: 0; transform: translateY(6px); }
+  .page-leave-to { opacity: 0; }
+
+  .v-btn { transition: transform 0.12s ease, box-shadow 0.15s ease, background-color 0.15s ease; }
+  .v-btn:active { transform: scale(0.97); }
+
+  .v-data-table tbody tr { transition: background-color 0.12s ease; }
+  .lift { transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
+  .lift:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); border-color: rgba(var(--v-theme-primary), 0.35) !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-enter-active, .page-leave-active, .v-btn, .lift { transition: none; }
+    .page-enter-from { transform: none; }
+    .v-btn:active, .lift:hover { transform: none; }
+  }
+
   .page { padding: 14px 20px !important; }
+  // Toolbar buttons (Columns, refresh): light border, 32px, 13px text.
+  .tool-btn.v-btn {
+    height: 32px;
+    min-width: 32px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+    background: rgb(var(--v-theme-surface));
+    color: rgb(var(--v-theme-on-surface));
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    box-shadow: none;
+  }
+  .tool-btn.v-btn:hover { background: rgba(var(--v-theme-on-surface), 0.05); }
+  .tool-btn--icon.v-btn { width: 32px; padding: 0; }
+  .tool-btn .v-icon { font-size: 16px; color: rgba(var(--v-theme-on-surface), 0.75); }
+
+  // Row action buttons: 28px rounded squares, white with a light red border.
+  .row-btn.v-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--v-theme-primary), 0.3);
+    background: rgb(var(--v-theme-surface));
+    color: rgb(var(--v-theme-primary));
+    box-shadow: none;
+  }
+  .row-btn.v-btn:hover { background: rgba(var(--v-theme-primary), 0.08); }
+  .row-btn--error.v-btn { border-color: rgba(var(--v-theme-error), 0.35); color: rgb(var(--v-theme-error)); }
+  .row-btn--error.v-btn:hover { background: rgba(var(--v-theme-error), 0.08); }
+  .row-btn--plain.v-btn { border-color: rgba(var(--v-border-color), var(--v-border-opacity)); }
+  .row-btn--plain.v-btn:hover { background: rgba(var(--v-theme-on-surface), 0.05); }
+
   .page-title { font-size: 20px; font-weight: 600; line-height: 1.25; margin: 0; text-wrap: balance; }
   .page-sub { font-size: 13px; line-height: 1.3; margin-top: 2px; }
   .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 12px; }
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 12px; margin-bottom: 12px; }
   .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+  // Table text matches the filter pills: 13px, with 11.5px second lines.
+  .v-data-table td, .v-table td { font-size: 13px !important; }
+  .v-data-table td .text-caption, .v-table td .text-caption { font-size: 11.5px !important; }
+  .v-data-table td .id-link { font-size: 13px; }
+  .v-data-table td .v-chip { font-size: 11.5px; }
 
   .v-data-table th {
     font-size: 11px !important;

@@ -74,7 +74,7 @@ function logout() {
 
 function swapToAdmin() {
   selectRole('admin')
-  router.push('/admin/dashboard')
+  router.push('/app/dashboard')
 }
 </script>
 
