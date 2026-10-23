@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page">
+  <v-container fluid class="page fill">
     <PageHeader title="Orders" subtitle="Customer orders from booking to invoice.">
       <template #left>
         <OrderFilterBar
@@ -14,7 +14,7 @@
       <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" height="32" @click="orderStore.openNew()">New order</v-btn>
     </PageHeader>
 
-    <v-card class="rounded-lg border overflow-hidden" flat>
+    <v-card class="rounded-lg border overflow-hidden fill-card" flat>
       <div class="d-flex align-center gap-3 pa-2 head">
         <StatusChips v-model="list.status" :items="list.statusChips" class="flex-grow-1" />
         <div class="d-flex gap-2 flex-none">
@@ -40,9 +40,10 @@
         item-value="id"
         show-select
         hide-default-footer
+        fixed-header
         hover
         density="comfortable"
-        class="row-link"
+        class="row-link fill-table"
         @click:row="onRowClick"
       >
         <template #item.id="{ item }">
@@ -64,11 +65,6 @@
         <template #item.status="{ item }"><StatusPill :status="item.status" /></template>
         <template #item.rate="{ item }">{{ item.rate ? item.rate.toLocaleString('en-US') : '—' }}</template>
         <template #item.jobType="{ item }"><v-chip size="small" label class="font-mono">{{ item.jobType }}</v-chip></template>
-        <template #item.cutoffs="{ item }">
-          <div class="text-caption text-no-wrap">Load {{ item.cutoff || '—' }}</div>
-          <div class="text-caption text-medium-emphasis text-no-wrap">Offload {{ item.cutoff || '—' }}</div>
-        </template>
-        <template #item.legs="{ item }">{{ item.legs.length || '—' }}</template>
         <template #item.actions="{ item }"><OrderRowActions :order="item" :flow="flow" /></template>
         <template #no-data>
           <div class="pa-8 text-center">
@@ -137,8 +133,6 @@ const DEFS: ColumnDef[] = [
   { colId: 'jobType', title: 'Job type', sortable: true },
   { colId: 'branch', title: 'Branch', sortable: true },
   { colId: 'orderDate', title: 'Order date', sortable: true },
-  { colId: 'cutoffs', title: 'Cut-offs' },
-  { colId: 'legs', title: 'Legs' },
 ]
 interface ColumnState { colId: string, hide: boolean, pinned: 'left' | null }
 const defaultState = (): ColumnState[] => DEFS.map(d => ({ colId: d.colId, hide: ['legs'].includes(d.colId), pinned: d.colId === 'id' ? 'left' : null }))
@@ -159,7 +153,7 @@ const headers = computed(() => [
     const d = defOf(s.colId)
     return { title: d.title, key: d.colId, sortable: !!d.sortable, align: d.align, fixed: s.pinned === 'left' }
   }),
-  { title: '', key: 'actions', sortable: false, align: 'end' as const },
+  { title: 'Actions', key: 'actions', sortable: false, align: 'start' as const },
 ])
 
 const toggleColumn = (id: string, visible: boolean) => { columnState.value.find(s => s.colId === id)!.hide = !visible }

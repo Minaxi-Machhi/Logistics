@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page">
+  <v-container fluid class="page fill">
     <PageHeader title="Trip scheduling" subtitle="Allocate trucks, reschedule and track legs.">
       <template #left>
         <TripFilterBar
@@ -14,7 +14,7 @@
       <v-btn variant="outlined" prepend-icon="mdi-download-outline" class="rounded-lg text-none font-weight-medium" height="32" @click="exportCsv">Export</v-btn>
     </PageHeader>
 
-    <v-card class="rounded-lg border overflow-hidden" flat>
+    <v-card class="rounded-lg border overflow-hidden fill-card" flat>
       <div class="d-flex align-center gap-3 pa-2 head">
         <StatusChips v-model="list.status" :items="list.statusChips" class="flex-grow-1" />
         <div class="d-flex gap-2 flex-none">
@@ -40,9 +40,10 @@
         item-value="id"
         show-select
         hide-default-footer
+        fixed-header
         hover
         density="comfortable"
-        class="row-link"
+        class="row-link fill-table"
         @click:row="onRowClick"
       >
         <template #item.order="{ item }">

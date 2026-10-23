@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page">
+  <v-container fluid class="page fill">
     <PageHeader title="Vendors" subtitle="Carriers, their contracts and purchase orders.">
       <template #left><ListFilterBar :list="active" /></template>
       <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" height="32" @click="crud.openNew()">{{ ADD[tab] }}</v-btn>

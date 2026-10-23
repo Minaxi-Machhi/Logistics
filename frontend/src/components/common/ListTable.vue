@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-lg border overflow-hidden" flat>
+  <v-card class="rounded-lg border overflow-hidden fill-card" flat>
     <div class="d-flex align-center gap-3 pa-2 head">
       <StatusChips v-if="list.statusChips.length" v-model="list.status" :items="list.statusChips" class="flex-grow-1" />
       <v-spacer v-else />
@@ -26,9 +26,10 @@
       item-value="id"
       show-select
       hide-default-footer
+      fixed-header
       hover
       density="comfortable"
-      :class="{ 'row-link': !!linkTo }"
+      :class="['fill-table', { 'row-link': !!linkTo }]"
       @click:row="onRowClick"
     >
       <template v-for="c in columns" :key="c.key" #[`item.${c.key}`]="{ item, value }">

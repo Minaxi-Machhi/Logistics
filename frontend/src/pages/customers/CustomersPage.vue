@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page">
+  <v-container fluid class="page fill">
     <PageHeader title="Customers" subtitle="Customer master and rate contracts.">
       <template #left><ListFilterBar :list="active" /></template>
       <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" height="32" @click="(tab === 'customers' ? customerCrud : contractCrud).openNew()">

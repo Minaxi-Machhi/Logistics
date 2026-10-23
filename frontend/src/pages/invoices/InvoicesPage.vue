@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page">
+  <v-container fluid class="page fill">
     <PageHeader title="Invoices" subtitle="Customer billing and collections.">
       <template #left><ListFilterBar :list="list" /></template>
       <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" height="32" @click="crud.openNew()">New invoice</v-btn>

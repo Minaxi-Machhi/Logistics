@@ -25,7 +25,7 @@ export function useColumnState (storageKey: string, defs: ColumnDef[], options: 
       const d = defOf(s.colId)
       return { title: d.title, key: d.colId, sortable: !!d.sortable, align: d.align, fixed: s.pinned === 'left' }
     }),
-    { title: '', key: 'actions', sortable: false, align: 'end' as const },
+    { title: 'Actions', key: 'actions', sortable: false, align: 'start' as const },
   ])
 
   // reactive() so templates can read `columns.headers` without .value.

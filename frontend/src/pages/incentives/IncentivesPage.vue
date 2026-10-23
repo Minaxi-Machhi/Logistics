@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="page">
+  <v-container fluid class="page fill">
     <PageHeader title="Incentives" subtitle="Driver incentives for on-time delivery and fuel saving.">
       <template #left><ListFilterBar :list="list" /></template>
       <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" class="rounded-lg text-none font-weight-bold" height="32" @click="crud.openNew()">Calculate incentives</v-btn>
