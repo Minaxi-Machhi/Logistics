@@ -50,7 +50,6 @@
         <v-btn variant="text" block class="text-none" prepend-icon="mdi-account-circle-outline" @click="customerDemo">
           Open the customer portal demo
         </v-btn>
-        <div class="text-caption text-disabled text-center mt-3">Demo build: any username and password signs in.</div>
       </v-card>
     </div>
   </div>
