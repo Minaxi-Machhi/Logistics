@@ -14,11 +14,11 @@ export const orderStore = reactive({
   splitOpen: false,
   replicateOpen: false,
   legOpen: false,
-  quickViewOpen: false,
+  drawerOpen: false,
 
   openNew () { this.currentOrderId = null; this.formOpen = true },
   openEdit (order: Order) { this.currentOrderId = order.id; this.formOpen = true },
-  open (dialog: 'rescheduleOpen' | 'pickDropOpen' | 'branchOpen' | 'rateOpen' | 'splitOpen' | 'replicateOpen' | 'legOpen' | 'quickViewOpen', order: Order) {
+  open (dialog: 'rescheduleOpen' | 'pickDropOpen' | 'branchOpen' | 'rateOpen' | 'splitOpen' | 'replicateOpen' | 'legOpen' | 'drawerOpen', order: Order) {
     this.currentOrderId = order.id
     this[dialog] = true
   },

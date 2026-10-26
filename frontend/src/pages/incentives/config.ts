@@ -3,9 +3,7 @@ import { dmyToIso } from '@/composables/useList'
 import type { ListConfig } from '@/composables/useList'
 import type { Column, FieldDef } from '@/types'
 import { DRV, STATUS } from '@/mock/lookups'
-import { num, req, select, text, to } from '../fields'
-
-export const incentiveLink = (r: { id: string }) => to('/app/incentives', r.id)
+import { num, req, select, text } from '../fields'
 
 export const incentiveColumns: Column[] = [
   { key: 'id', title: 'Ref', type: 'mono' }, { key: 'driver', title: 'Driver' }, { key: 'period', title: 'Period' }, { key: 'trips', title: 'Trips' },

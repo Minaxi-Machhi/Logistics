@@ -10,19 +10,21 @@
       <v-tab value="vehicles" class="text-none">Vehicles <v-chip size="x-small" label class="ml-2 font-mono">{{ vehicles.length }}</v-chip></v-tab>
     </v-tabs>
 
-    <ListTable v-if="tab === 'drivers'" :list="driverList" :columns="driverColumns" storage-key="drivers" :link-to="driverLink" empty-text="Add the first driver.">
+    <ListTable v-if="tab === 'drivers'" :list="driverList" :columns="driverColumns" storage-key="drivers" row-click="event" empty-text="Add the first driver." @row-click="showDriver">
       <template #actions="{ item }">
         <RowActionButton icon="mdi-pencil-outline" label="Edit driver" @click="driverCrud.openEdit(item)" />
         <RowActionButton tone="error" icon="mdi-delete-outline" label="Delete driver" @click="driverCrud.askRemove(item)" />
       </template>
     </ListTable>
-    <ListTable v-else :list="vehicleList" :columns="vehicleColumns" storage-key="vehicles" :link-to="vehicleLink" empty-text="Add the first vehicle.">
+    <ListTable v-else :list="vehicleList" :columns="vehicleColumns" storage-key="vehicles" row-click="event" empty-text="Add the first vehicle." @row-click="showVehicle">
       <template #actions="{ item }">
         <RowActionButton icon="mdi-pencil-outline" label="Edit vehicle" @click="vehicleCrud.openEdit(item)" />
         <RowActionButton tone="error" icon="mdi-delete-outline" label="Delete vehicle" @click="vehicleCrud.askRemove(item)" />
       </template>
     </ListTable>
 
+    <DriverDrawer v-model="driverDrawer" :driver="selectedDriver" />
+    <VehicleDrawer v-model="vehicleDrawer" :vehicle="selectedVehicle" />
     <AssetFormDialog v-model="driverCrud.formOpen" kind="driver" :row="driverCrud.editing" @save="driverCrud.save" />
     <AssetFormDialog v-model="vehicleCrud.formOpen" kind="vehicle" :row="vehicleCrud.editing" @save="vehicleCrud.save" />
     <ConfirmDialog v-model="driverCrud.confirmOpen" title="Delete driver?" :text="`${driverCrud.target?.id} will be removed from this list.`" @confirm="driverCrud.remove()" />
@@ -43,7 +45,9 @@ import ListTable from '@/components/common/ListTable.vue'
 import PageHeader from '@/components/common/PageHeader.vue'
 import RowActionButton from '@/components/common/RowActionButton.vue'
 import AssetFormDialog from './components/AssetFormDialog.vue'
-import { driverColumns, driverLink, driverListConfig, vehicleColumns, vehicleLink, vehicleListConfig } from './config'
+import DriverDrawer from './components/DriverDrawer.vue'
+import VehicleDrawer from './components/VehicleDrawer.vue'
+import { driverColumns, driverListConfig, vehicleColumns, vehicleListConfig } from './config'
 
 const route = useRoute()
 const tab = ref(route.query.tab === 'vehicles' ? 'vehicles' : 'drivers')
@@ -52,6 +56,22 @@ const driverList = useList(() => drivers, driverListConfig)
 const vehicleList = useList(() => vehicles, vehicleListConfig)
 const active = computed(() => (tab.value === 'drivers' ? driverList : vehicleList))
 onMounted(() => { driverList.restore(); vehicleList.restore() })
+
+// Row click opens a side drawer with the full details.
+const driverDrawer = ref(false)
+const vehicleDrawer = ref(false)
+const selectedDriver = ref<Driver | null>(null)
+const selectedVehicle = ref<Vehicle | null>(null)
+
+function showDriver (row: Driver) {
+  selectedDriver.value = row
+  driverDrawer.value = true
+}
+
+function showVehicle (row: Vehicle) {
+  selectedVehicle.value = row
+  vehicleDrawer.value = true
+}
 
 const driverCrud = useCrud<Driver>(drivers, { prefix: 'DRV-' })
 const vehicleCrud = useCrud<Vehicle>(vehicles, { prefix: '' })

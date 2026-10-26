@@ -29,12 +29,13 @@
       fixed-header
       hover
       density="comfortable"
-      :class="['fill-table', { 'row-link': !!linkTo }]"
+      :class="['fill-table', { 'row-link': !!linkTo || rowClick === 'event' }]"
       @click:row="onRowClick"
     >
       <template v-for="c in columns" :key="c.key" #[`item.${c.key}`]="{ item, value }">
         <slot :name="`item.${c.key}`" :item="item" :value="value">
           <router-link v-if="c.key === 'id' && linkTo" :to="linkTo(item)" class="id-link font-mono" @click.stop>{{ value }}</router-link>
+          <span v-else-if="c.key === 'id' && rowClick === 'event'" class="id-link font-mono">{{ value }}</span>
           <StatusPill v-else-if="c.type === 'status'" :status="String(value)" />
           <span v-else-if="c.type === 'money'">{{ money(Number(value)) }}</span>
           <span v-else-if="c.type === 'mono'" class="font-mono">{{ value }}</span>
@@ -76,8 +77,12 @@ const props = withDefaults(defineProps<{
   /** Remembers the column layout. */
   storageKey: string
   linkTo?: (row: any) => string
+  /** "link" opens the detail page on a row click; "event" emits `rowClick` instead (e.g. to open a side drawer). */
+  rowClick?: 'link' | 'event'
   emptyText?: string
-}>(), { emptyText: 'Nothing here yet.' })
+}>(), { emptyText: 'Nothing here yet.', rowClick: 'link' })
+
+const emit = defineEmits<{ rowClick: [row: any] }>()
 
 const router = useRouter()
 const selected = ref<string[]>([])
@@ -95,7 +100,8 @@ const sortBy = computed({
 watch([() => props.list.search, () => props.list.values, () => props.list.status, () => props.list.page, () => props.list.pageSize], () => { selected.value = [] }, { deep: true })
 
 function onRowClick (_: Event, { item }: { item: any }) {
-  if (props.linkTo) router.push(props.linkTo(item))
+  if (props.rowClick === 'event') emit('rowClick', item)
+  else if (props.linkTo) router.push(props.linkTo(item))
 }
 
 const picked = () => props.list.rows.filter((r: { id: string }) => selected.value.includes(r.id))

@@ -1,12 +1,12 @@
 <template>
-  <v-navigation-drawer v-model="orderStore.quickViewOpen" temporary location="right" width="420" class="quick">
+  <v-navigation-drawer v-model="orderStore.drawerOpen" temporary location="right" width="420" class="quick">
     <template v-if="order">
       <div class="d-flex align-start justify-space-between pa-4 pb-2">
         <div>
           <div class="text-subtitle-1 font-weight-bold font-mono">{{ order.id }}</div>
           <div class="text-caption text-medium-emphasis">{{ order.jobType }} · {{ order.ref }}</div>
         </div>
-        <v-btn icon="mdi-close" variant="text" size="small" aria-label="Close" @click="orderStore.quickViewOpen = false" />
+        <v-btn icon="mdi-close" variant="text" size="small" aria-label="Close" @click="orderStore.drawerOpen = false" />
       </div>
       <div class="px-4 pb-3"><StatusPill :status="order.status" /></div>
       <v-divider />
@@ -57,12 +57,12 @@ const facts = computed(() => {
 })
 
 function openOrder () {
-  orderStore.quickViewOpen = false
+  orderStore.drawerOpen = false
   if (order.value) router.push(orderLink(order.value))
 }
 
 function edit () {
-  orderStore.quickViewOpen = false
+  orderStore.drawerOpen = false
   if (order.value) orderStore.openEdit(order.value)
 }
 </script>

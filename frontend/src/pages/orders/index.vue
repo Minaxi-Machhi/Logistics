@@ -80,7 +80,7 @@
       <div class="px-3 py-2 foot"><ListPagination v-model:page="list.page" v-model:page-size="list.pageSize" :total="list.total" /></div>
     </v-card>
 
-    <OrderQuickView />
+    <OrderDrawer />
     <OrderFlowDialogs :flow="flow" />
     <OrderDialogs />
   </v-container>
@@ -104,7 +104,7 @@ import StatusPill from '@/components/common/StatusPill.vue'
 import OrderDialogs from './components/OrderDialogs.vue'
 import OrderFilterBar from './components/OrderFilterBar.vue'
 import OrderFlowDialogs from './components/OrderFlowDialogs.vue'
-import OrderQuickView from './components/OrderQuickView.vue'
+import OrderDrawer from './components/OrderDrawer.vue'
 import OrderRowActions from './components/OrderRowActions.vue'
 import { orderLink } from './config'
 
@@ -189,7 +189,7 @@ function exportCsv () {
 }
 
 function onRowClick (_: Event, { item }: { item: Order }) {
-  orderStore.open('quickViewOpen', item)
+  orderStore.open('drawerOpen', item)
 }
 
 function clearAll () {
