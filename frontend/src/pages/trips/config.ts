@@ -18,5 +18,5 @@ export const tripFields: FieldDef[] = [
   text('distance', 'Distance', { hint: 'e.g. 140 km' }),
   date('departure', 'Departure'),
   date('eta', 'ETA'),
-  select('status', 'Status', STATUS.trip, { ...req, value: 'Scheduled' }),
+  select('status', 'Status', STATUS.trip, { ...req, value: 'Assigned' }),
 ]

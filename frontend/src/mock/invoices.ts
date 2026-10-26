@@ -10,11 +10,11 @@ export function withVat<T extends { amount: number }> (row: T): T & { vat: numbe
 export const invoices = reactive<Invoice[]>(rows(16, i => withVat({
   id: `INV-26-${1040 + i}`,
   customer: pick(CUST, i + 3),
-  order: `ATS-TL2610-${String(27 - (i % 27)).padStart(4, '0')}`,
+  orders: [`ATS-TL2610-${String(27 - (i % 27)).padStart(4, '0')}`],
   date: day(i * 2),
   due: day(-28 + i * 2),
   amount: 4200 + i * 635,
-  status: pick(['Paid', 'Sent', 'Overdue', 'Paid', 'Draft', 'Due soon'], i),
+  status: pick(['Paid', 'Sent', 'Approved', 'Paid', 'Draft', 'Sent'], i),
 })))
 
 export const incentives = reactive<Incentive[]>(DRV.map((driver, i) => ({

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="page fill">
-    <PageHeader title="Trip scheduling" subtitle="Allocate trucks, reschedule and track legs.">
+    <PageHeader title="Trip scheduling" subtitle="Allocate trucks, reschedule and track trips.">
       <template #left>
         <TripFilterBar
           v-model:more-open="list.moreOpen"
@@ -52,7 +52,7 @@
         </template>
         <template #item.id="{ item }">
           <router-link :to="tripLink(item)" class="id-link font-mono" @click.stop>{{ item.id }}</router-link>
-          <div class="text-caption text-medium-emphasis">{{ item.fleet }} · {{ item.status }}</div>
+          <div class="text-caption text-medium-emphasis">{{ item.fleet }}</div>
         </template>
         <template #item.route="{ item }">
           <div class="font-weight-medium text-no-wrap">{{ item.route }}</div>
@@ -66,7 +66,7 @@
           <div v-if="item.delayMin" class="delay"><v-icon icon="mdi-clock-alert-outline" size="12" /> Delayed {{ delayText(item.delayMin) }}</div>
           <div v-else class="text-caption text-medium-emphasis">ETA {{ item.eta }}</div>
         </template>
-        <template #item.legStatus="{ item }"><StatusPill :status="item.legStatus" /></template>
+        <template #item.status="{ item }"><StatusPill :status="item.status" /></template>
         <template #item.vehicle="{ item }">
           <button v-if="item.vehicle || CAN_ALLOCATE.includes(item.status)" type="button" class="cell-edit font-mono" @click.stop="CAN_ALLOCATE.includes(item.status) && tripStore.open('allocateOpen', item)">
             {{ item.vehicle || 'Assign' }}<v-icon v-if="CAN_ALLOCATE.includes(item.status)" icon="mdi-pencil" size="13" color="primary" />
@@ -129,7 +129,7 @@ const columns = useColumnState('trip-list-columns-v2', [
   { colId: 'order', title: 'Order', sortable: true },
   { colId: 'route', title: 'Route', sortable: true },
   { colId: 'loading', title: 'Loading', sortable: true },
-  { colId: 'legStatus', title: 'Leg status', sortable: true },
+  { colId: 'status', title: 'Trip status', sortable: true },
   { colId: 'vehicle', title: 'Vehicle', sortable: true },
   { colId: 'driver', title: 'Driver', sortable: true },
   { colId: 'customer', title: 'Customer', sortable: true },
@@ -143,7 +143,7 @@ const sortBy = computed({
 watch([() => list.filters, () => list.status, () => list.page, () => list.pageSize], () => { selected.value = [] }, { deep: true })
 
 // A coloured edge marks finished and late trips.
-const rowProps = ({ item }: { item: TripRow }) => ({ class: item.delayMin ? 'edge edge--late' : item.legStatus === 'Completed' ? 'edge edge--done' : item.legStatus === 'Needs a truck' ? 'edge edge--wait' : '' })
+const rowProps = ({ item }: { item: TripRow }) => ({ class: item.delayMin ? 'edge edge--late' : item.status === 'Completed' ? 'edge edge--done' : item.status === 'Unassigned' ? 'edge edge--wait' : '' })
 
 const delayText = (m: number) => m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m} min`
 
@@ -163,9 +163,9 @@ async function copyNumbers () {
 // Exports the selected trips, or every trip matching the filters when none are selected.
 function exportCsv () {
   const source = selected.value.length ? list.rows.filter(t => selected.value.includes(t.id)) : list.rows
-  const head = ['Trip', 'Order', 'Route', 'Customer', 'Job type', 'Loading', 'ETA', 'Leg status', 'Vehicle', 'Driver']
+  const head = ['Trip', 'Order', 'Route', 'Customer', 'Job type', 'Loading', 'ETA', 'Trip status', 'Vehicle', 'Driver']
   const q = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`
-  const lines = source.map(t => [t.id, t.order, t.route, t.customer, t.jobType, t.departure, t.eta, t.legStatus, t.vehicle, t.driver].map(q).join(','))
+  const lines = source.map(t => [t.id, t.order, t.route, t.customer, t.jobType, t.departure, t.eta, t.status, t.vehicle, t.driver].map(q).join(','))
   const url = URL.createObjectURL(new Blob([[head.join(','), ...lines].join('\n')], { type: 'text/csv' }))
   const a = document.createElement('a')
   a.href = url

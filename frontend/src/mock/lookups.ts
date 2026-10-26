@@ -26,11 +26,11 @@ export const VEHICLE_TYPE = ['Trailer 40 ft', 'Flatbed 20 ft', 'Reefer 20 ft', '
 export const BRANCH = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Northern Emirates']
 
 export const STATUS_COLOR: Record<string, StatusColor> = {
-  Delivered: 'success', Completed: 'success', Paid: 'success', Active: 'success', Available: 'success', Approved: 'success',
+  Delivered: 'success', Completed: 'success', Paid: 'success', Active: 'success', Available: 'success', Approved: 'primary',
   'On duty': 'info', 'In transit': 'info', Confirmed: 'info', Sent: 'info', Open: 'info', 'Ready for invoice': 'info',
   Pending: 'warning', Draft: 'warning', 'Due soon': 'warning', Expiring: 'warning', 'In service': 'warning',
   Cancelled: 'error', Overdue: 'error', Expired: 'error', Rejected: 'error',
-  'Needs a truck': 'warning', Assigned: 'info', 'In progress': 'info',
+  Unassigned: 'warning', Assigned: 'info',
   'On leave': 'secondary', Scheduled: 'secondary', Closed: 'secondary', 'Invoice generated': 'secondary',
 }
 
@@ -38,9 +38,9 @@ export const STATUS = {
   order: ['Pending', 'Confirmed', 'Active', 'Completed', 'Ready for invoice', 'Invoice generated', 'Cancelled', 'Rejected'],
   doc: ['Draft', 'Active', 'Expiring', 'Expired'],
   party: ['Active', 'Pending'],
-  trip: ['Scheduled', 'In transit', 'Delivered', 'Cancelled'],
+  trip: ['Unassigned', 'Assigned', 'Active', 'Completed', 'Cancelled'],
   vendorOrder: ['Pending', 'Confirmed', 'Delivered', 'Cancelled'],
-  invoice: ['Draft', 'Sent', 'Due soon', 'Overdue', 'Paid'],
+  invoice: ['Draft', 'Sent', 'Approved', 'Paid'],
   driver: ['Available', 'On duty', 'On leave'],
   vehicle: ['Available', 'On duty', 'In service'],
   incentive: ['Open', 'Pending', 'Approved', 'Rejected'],

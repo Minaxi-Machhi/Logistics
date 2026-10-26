@@ -1,6 +1,6 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { LEG_STATUSES, toRow, type TripRow } from '@/mock/tripOps'
+import { TRIP_STATUSES, toRow, type TripRow } from '@/mock/tripOps'
 import { trips } from '@/mock/trips'
 
 export interface TripFilters {
@@ -21,7 +21,7 @@ const dmyToIso = (dmy: string) => dmy.split('/').reverse().join('-')
 const within = (list: string[], v: string) => !list.length || list.includes(v)
 
 const SORTERS: Record<string, (t: TripRow) => string> = {
-  order: t => t.order, id: t => t.id, route: t => t.route, loading: t => dmyToIso(t.departure), legStatus: t => t.legStatus,
+  order: t => t.order, id: t => t.id, route: t => t.route, loading: t => dmyToIso(t.departure), status: t => t.status,
   vehicle: t => t.vehicle, driver: t => t.driver, customer: t => t.customer,
 }
 
@@ -52,12 +52,12 @@ export function useTripList () {
 
   const counts = computed(() => {
     const byStatus: Record<string, number> = {}
-    for (const t of base.value) byStatus[t.legStatus] = (byStatus[t.legStatus] ?? 0) + 1
+    for (const t of base.value) byStatus[t.status] = (byStatus[t.status] ?? 0) + 1
     return { total: base.value.length, byStatus }
   })
 
   const sorted = computed(() => {
-    const rows = status.value ? base.value.filter(t => t.legStatus === status.value) : [...base.value]
+    const rows = status.value ? base.value.filter(t => t.status === status.value) : [...base.value]
     if (!ordering.value) return rows
     const desc = ordering.value.startsWith('-')
     const get = SORTERS[ordering.value.replace(/^-/, '')]
@@ -70,11 +70,11 @@ export function useTripList () {
 
   const statusChips = computed(() => [
     { value: null as string | null, label: 'All', count: counts.value.total },
-    ...LEG_STATUSES.map(s => ({
+    ...TRIP_STATUSES.map(s => ({
       value: s as string | null,
       label: s,
       count: counts.value.byStatus[s] ?? 0,
-      tone: s === 'Needs a truck' ? ('attention' as const) : s === 'Cancelled' ? ('muted' as const) : undefined,
+      tone: s === 'Unassigned' ? ('attention' as const) : s === 'Cancelled' ? ('muted' as const) : undefined,
     })),
   ])
 
@@ -98,7 +98,7 @@ export function useTripList () {
   const fromQuery = (q: Record<string, any>) => {
     const list = (v: unknown) => String(v ?? '').split(',').filter(Boolean)
     filters.search = String(q.q ?? '')
-    status.value = (LEG_STATUSES as readonly string[]).includes(q.status) ? q.status : null
+    status.value = (TRIP_STATUSES as readonly string[]).includes(q.status) ? q.status : null
     for (const [key, field] of Object.entries(LIST_URL_KEYS)) filters[field] = list(q[key])
     ordering.value = q.sort && SORTERS[String(q.sort).replace(/^-/, '')] ? String(q.sort) : null
     page.value = Math.max(1, Number(q.page) || 1)

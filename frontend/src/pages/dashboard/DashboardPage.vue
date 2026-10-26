@@ -30,5 +30,5 @@ const columns: Column[] = [
   { key: 'id', title: 'Trip no.', type: 'mono' }, { key: 'route', title: 'Route' }, { key: 'driver', title: 'Driver' },
   { key: 'vehicle', title: 'Vehicle', type: 'mono' }, { key: 'eta', title: 'ETA' }, { key: 'status', title: 'Status', type: 'status' },
 ]
-const activeTrips = trips.filter(t => t.status === 'In transit' || t.status === 'Scheduled').slice(0, 6)
+const activeTrips = trips.filter(t => t.status === 'Active' || t.status === 'Assigned').slice(0, 6)
 </script>

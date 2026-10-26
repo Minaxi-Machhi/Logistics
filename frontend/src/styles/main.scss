@@ -96,7 +96,7 @@
   .page-sub { font-size: 13px; line-height: 1.3; margin-top: 2px; }
   .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 12px; }
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 12px; margin-bottom: 12px; }
-  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .grid-cards { display: grid; align-items: stretch; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 
   // Table text matches the filter pills: 13px, with 11.5px second lines.

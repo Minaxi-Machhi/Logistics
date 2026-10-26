@@ -1,7 +1,7 @@
 <template>
   <div class="d-inline-flex align-center gap-2" @click.stop>
-    <RowActionButton v-if="trip.status === 'Scheduled' && !needs" icon="mdi-play-circle-outline" label="Start trip" @click="start" />
-    <RowActionButton v-if="trip.status === 'In transit'" icon="mdi-check-circle-outline" label="Complete trip" @click="complete" />
+    <RowActionButton v-if="trip.status === 'Assigned'" icon="mdi-play-circle-outline" label="Start trip" @click="start" />
+    <RowActionButton v-if="trip.status === 'Active'" icon="mdi-check-circle-outline" label="Complete trip" @click="complete" />
     <RowActionButton v-if="CAN_ALLOCATE.includes(trip.status)" icon="mdi-truck-plus-outline" :label="needs ? 'Allocate truck' : 'Change truck'" @click="tripStore.open('allocateOpen', trip)" />
   </div>
 </template>

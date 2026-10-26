@@ -3,10 +3,8 @@ import { dmyToIso } from '@/composables/useList'
 import type { ListConfig } from '@/composables/useList'
 import type { Column, FieldDef } from '@/types'
 import { STATUS, VEHICLE_TYPE } from '@/mock/lookups'
-import { date, num, req, select, text, to } from '../fields'
+import { date, num, req, select, text } from '../fields'
 
-export const driverLink = (r: { id: string }) => to('/app/assets/drivers', r.id)
-export const vehicleLink = (r: { id: string }) => to('/app/assets/vehicles', r.id)
 
 export const driverColumns: Column[] = [
   { key: 'id', title: 'Code', type: 'mono' }, { key: 'name', title: 'Driver' }, { key: 'phone', title: 'Phone', type: 'mono' }, { key: 'licence', title: 'Licence no.', type: 'mono' },

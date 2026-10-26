@@ -5,7 +5,7 @@ import { CITY, day, DRV, pick, PLATE, rows } from './lookups'
 // Every sixth trip has no truck yet, and a few running trips are late.
 export const trips = reactive<Trip[]>(rows(18, i => {
   const unassigned = i % 6 === 4
-  const status = unassigned ? 'Scheduled' : pick(['In transit', 'Delivered', 'Scheduled', 'Delivered', 'In transit'], i)
+  const status = unassigned ? 'Unassigned' : pick(['Active', 'Completed', 'Assigned', 'Completed', 'Active'], i)
   return {
     id: `TRP-${5100 + i}`,
     order: `ATS-TL2610-${String(27 - (i % 27)).padStart(4, '0')}`,
@@ -16,6 +16,6 @@ export const trips = reactive<Trip[]>(rows(18, i => {
     departure: day(i),
     eta: day(i - 1),
     status,
-    ...(status === 'In transit' && i % 4 === 0 ? { delayMin: 20 + i * 7 } : {}),
+    ...(status === 'Active' && i % 4 === 0 ? { delayMin: 20 + i * 7 } : {}),
   }
 }))

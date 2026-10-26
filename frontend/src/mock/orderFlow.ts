@@ -38,7 +38,7 @@ export function createTripForOrder (order: Order, input: TripInput): Trip {
     order: order.id,
     route: `${order.origin} → ${order.destination}`,
     distance: '—',
-    status: 'Scheduled',
+    status: 'Assigned',
     ...input,
   }
   trips.unshift(trip)
@@ -48,12 +48,12 @@ export function createTripForOrder (order: Order, input: TripInput): Trip {
 }
 
 export function startTrip (trip: Trip): void {
-  trip.status = 'In transit'
+  trip.status = 'Active'
 }
 
 /** Delivers a trip and frees its driver and vehicle. Returns the order if it moved to Completed. */
 export function completeTrip (trip: Trip): Order | undefined {
-  trip.status = 'Delivered'
+  trip.status = 'Completed'
   setAssetStatus(trip, 'Available')
   const order = orders.find(o => o.id === trip.order)
   if (order?.status === 'Active') {
@@ -71,7 +71,7 @@ export function generateInvoice (order: Order): Invoice {
   const invoice = withVat({
     id: nextId(invoices, 'INV-26-'),
     customer: order.customer,
-    order: order.id,
+    orders: [order.id],
     date: TODAY,
     due: addDays(TODAY, 30),
     amount: order.rate,
