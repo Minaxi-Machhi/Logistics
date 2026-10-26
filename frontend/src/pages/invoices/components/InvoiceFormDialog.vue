@@ -1,8 +1,9 @@
 <template>
   <FormDialog
     :model-value="modelValue"
-    :title="row ? `Edit ${row.id}` : 'New invoice'"
-    :submit-label="row ? 'Save changes' : 'Create invoice'"
+    :title="`Edit ${row?.id ?? ''}`"
+    submit-label="Save changes"
+    :columns="2"
     :fields="invoiceFields"
     :row="row"
     @update:model-value="emit('update:modelValue', $event)"

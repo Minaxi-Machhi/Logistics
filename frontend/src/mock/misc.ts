@@ -5,14 +5,12 @@ export interface Kpi { label: string, value: string, note: string, color: Status
 export interface Notification { text: string, time: string, icon: string, color: StatusColor }
 
 export const reports: Report[] = [
-  { title: 'Revenue by customer', text: 'Billed amount per customer for any date range.', icon: 'mdi-cash-multiple' },
-  { title: 'Trip profitability', text: 'Customer rate against vendor cost and fuel for each trip.', icon: 'mdi-chart-line' },
-  { title: 'Order status summary', text: 'FTL, FCL and LTL orders grouped by status.', icon: 'mdi-package-variant-closed' },
-  { title: 'Vendor payables', text: 'Open vendor purchase orders and ageing.', icon: 'mdi-account-cash-outline' },
-  { title: 'Receivables ageing', text: 'Outstanding invoices in 0-30, 31-60 and 60+ day buckets.', icon: 'mdi-clock-alert-outline' },
-  { title: 'Driver performance', text: 'On-time delivery, trips and incentive earned.', icon: 'mdi-card-account-details-outline' },
-  { title: 'Vehicle utilisation', text: 'Running days, idle days and km per vehicle.', icon: 'mdi-truck-outline' },
-  { title: 'Contract expiry', text: 'Customer and vendor contracts ending in 60 days.', icon: 'mdi-file-clock-outline' },
+  { title: 'Trip report', text: 'Every trip in the date range with its order, driver, vehicle and status.', icon: 'mdi-truck-fast-outline' },
+  { title: 'Order report', text: 'Orders placed in the date range with route, rate and status.', icon: 'mdi-package-variant-closed' },
+  { title: 'Driver and vehicle optimization', text: 'Trips, distance and idle days for each driver and vehicle.', icon: 'mdi-gauge' },
+  { title: 'Incentive report', text: 'Driver incentives with on-time delivery and fuel saving.', icon: 'mdi-medal-outline' },
+  { title: 'Receivables ageing', text: 'Unpaid invoices per customer, grouped by how long they are past due.', icon: 'mdi-clock-alert-outline' },
+  { title: 'Revenue by customer', text: 'Billed amount, VAT and total per customer for the date range.', icon: 'mdi-cash-multiple' },
 ]
 
 export const dashboard = {
@@ -29,7 +27,7 @@ export const dashboard = {
 }
 
 export const notifications: Notification[] = [
-  { text: 'Invoice INV-26-1042 is overdue', time: '2 hours ago', icon: 'mdi-alert-circle-outline', color: 'error' },
+  { text: 'Invoice INV-26-1042 is waiting for approval', time: '2 hours ago', icon: 'mdi-alert-circle-outline', color: 'error' },
   { text: 'Trip TRP-5103 reached Sharjah', time: '5 hours ago', icon: 'mdi-truck-check-outline', color: 'success' },
   { text: 'DXB K 77342 insurance expires in 30 days', time: 'Yesterday', icon: 'mdi-shield-alert-outline', color: 'warning' },
   { text: 'Contract CC-2203 is expiring', time: 'Yesterday', icon: 'mdi-file-clock-outline', color: 'warning' },

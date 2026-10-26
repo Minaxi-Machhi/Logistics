@@ -2,7 +2,7 @@
   <div class="bar">
     <label class="search">
       <v-icon icon="mdi-magnify" size="16" />
-      <input ref="inputEl" v-model="filters.search" type="search" placeholder="Search leg, trip, order, driver…  ( / )" aria-label="Search trips">
+      <input ref="inputEl" v-model="filters.search" type="search" placeholder="Search trip, order, driver…  ( / )" aria-label="Search trips">
     </label>
     <FilterSelect v-model="filters.branches" label="Branch" icon="mdi-office-building-outline" :options="opts(BRANCH)" multiple all-label="All branches" />
     <FilterSelect v-model="filters.customers" label="Customer" icon="mdi-account-group-outline" :options="opts(CUST)" multiple searchable all-label="All customers" />

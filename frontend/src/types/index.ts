@@ -1,4 +1,4 @@
-export type StatusColor = 'success' | 'info' | 'warning' | 'error' | 'secondary'
+export type StatusColor = 'success' | 'info' | 'warning' | 'error' | 'secondary' | 'primary'
 
 export type ColumnType = 'text' | 'mono' | 'money' | 'status'
 
@@ -144,7 +144,8 @@ export interface Vehicle extends Entity {
 
 export interface Invoice extends Entity {
   customer: string
-  order: string
+  /** Orders billed on this invoice. */
+  orders: string[]
   date: string
   due: string
   amount: number

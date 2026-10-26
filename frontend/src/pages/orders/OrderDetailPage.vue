@@ -99,5 +99,5 @@ const sections = computed<DetailSection[]>(() => {
 })
 
 const relatedTrips = computed(() => trips.filter(t => t.order === route.params.id))
-const relatedInvoices = computed(() => invoices.filter(i => i.order === route.params.id))
+const relatedInvoices = computed(() => invoices.filter(i => i.orders.includes(String(route.params.id))))
 </script>

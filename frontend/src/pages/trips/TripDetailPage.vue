@@ -1,8 +1,8 @@
 <template>
   <RecordDetail v-if="trip" :title="trip.id" :subtitle="trip.route" :status="trip.status" back-to="/app/trips" :sections="sections">
     <template #actions>
-      <v-btn v-if="trip.status === 'Scheduled'" color="primary" variant="flat" prepend-icon="mdi-play-circle-outline" class="rounded-lg text-none font-weight-bold" @click="start">Start trip</v-btn>
-      <v-btn v-if="trip.status === 'In transit'" color="primary" variant="flat" prepend-icon="mdi-check-circle-outline" class="rounded-lg text-none font-weight-bold" @click="complete">Complete trip</v-btn>
+      <v-btn v-if="trip.status === 'Assigned'" color="primary" variant="flat" prepend-icon="mdi-play-circle-outline" class="rounded-lg text-none font-weight-bold" @click="start">Start trip</v-btn>
+      <v-btn v-if="trip.status === 'Active'" color="primary" variant="flat" prepend-icon="mdi-check-circle-outline" class="rounded-lg text-none font-weight-bold" @click="complete">Complete trip</v-btn>
       <v-btn variant="outlined" prepend-icon="mdi-pencil-outline" class="rounded-lg text-none" @click="crud.openEdit(trip)">Edit</v-btn>
       <v-btn variant="outlined" color="error" prepend-icon="mdi-delete-outline" class="rounded-lg text-none" @click="crud.askRemove(trip)">Delete</v-btn>
     </template>

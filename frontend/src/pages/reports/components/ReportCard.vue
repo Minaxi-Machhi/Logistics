@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-lg border pa-4 h-100 d-flex flex-column" flat>
+  <v-card class="rounded-lg border pa-4 d-flex flex-column" flat>
     <v-avatar color="accent" rounded="lg" size="40" class="mb-3">
       <v-icon color="primary">{{ report.icon }}</v-icon>
     </v-avatar>
